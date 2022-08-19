@@ -10,7 +10,7 @@ extends Node
 # Private
 var _isPlaying := true
 var _id := 0
-var _rpm := 0
+var _rpm := 1000
 var _headers := ["Content-Type:application/json"]
 
 # Preloads 
@@ -31,16 +31,22 @@ onready var _ngram: SpinBox = $HBoxContainer/NGram
 func _enter_tree() -> void:
 	# Setup FMOD
 	Fmod.set_software_format(0, Fmod.FMOD_SPEAKERMODE_STEREO, 0)
-	Fmod.init(1024, Fmod.FMOD_STUDIO_INIT_LIVEUPDATE, Fmod.FMOD_INIT_NORMAL)
+	#Fmod.init(1024, Fmod.FMOD_STUDIO_INIT_LIVEUPDATE, Fmod.FMOD_INIT_NORMAL)
 	Fmod.set_sound_3D_settings(1, 32, 1)
 	
+	var basePath = ""
+	if OS.get_name() != "OSX":
+		basePath = "res://assets/Banks/"
+	else:
+		basePath = OS.get_executable_path().get_base_dir() + "..//assets/Banks/"
+	print(basePath)
 	# Load banks
 	# warning-ignore:return_value_discarded
-	Fmod.load_bank("res://assets/Banks/Master.strings.bank", Fmod.FMOD_STUDIO_LOAD_BANK_NORMAL)
+	Fmod.load_bank(basePath + "Master.strings.bank", Fmod.FMOD_STUDIO_LOAD_BANK_NORMAL)
 	# warning-ignore:return_value_discarded
-	Fmod.load_bank("res://assets/Banks/Master.bank", Fmod.FMOD_STUDIO_LOAD_BANK_NORMAL)
+	Fmod.load_bank(basePath + "Master.bank", Fmod.FMOD_STUDIO_LOAD_BANK_NORMAL)
 	# warning-ignore:return_value_discarded
-	Fmod.load_bank("res://assets/Banks/Vehicles.bank", Fmod.FMOD_STUDIO_LOAD_BANK_NORMAL)
+	Fmod.load_bank(basePath + "Vehicles.bank", Fmod.FMOD_STUDIO_LOAD_BANK_NORMAL)
 
 ## Called when the node is "ready", i.e. when both the node and its children have entered the scene tree
 func _ready() -> void:
